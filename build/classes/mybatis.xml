@@ -1,0 +1,39 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<configuration>
+    <typeAliases>
+        <typeAlias alias="UserBean" type="com.zm.bean.UserBean"/>
+        <typeAlias alias="SignBean" type="com.zm.bean.SignBean"/>
+        <typeAlias alias="TrainImgPathBean" type="com.zm.bean.TrainImgPathBean"/>
+        <typeAlias alias="SignItemBean" type="com.zm.bean.SignItemBean"/>
+        <typeAlias alias="RegisterItemBean" type="com.zm.bean.RegisterItemBean"/>
+        <typeAlias alias="ManagerUserBean" type="com.zm.bean.ManagerUserBean"/>
+        <typeAlias alias="ManagerSignItemBean" type="com.zm.bean.ManagerSignItemBean"/>
+        <typeAlias alias="ClassifierBean" type="com.zm.bean.ClassifierBean"/>
+        <typeAlias alias="TrainScheduler" type="com.zm.bean.TrainScheduler"/>
+        
+    </typeAliases>
+    
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="jdbc"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/face"/>
+                <property name="username" value="zm"/>
+                <property name="password" value="19880102"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <mappers>
+        <mapper resource="com/zm/mapper/login.xml"/>
+        <mapper resource="com/zm/mapper/sign.xml"/>
+        <mapper resource="com/zm/mapper/managerlogin.xml"/>
+        <mapper resource="com/zm/mapper/manager_review.xml"/>
+    </mappers>
+    
+</configuration>

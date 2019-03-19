@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zm.dao.LoginDao">
+
+	<select id="login" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select * from user,department,company where user.department_id=department.id
+		and department.company_id=company.id
+		and user.user=#{user}
+		and user.password=#{password}
+	</select>
+	<select id="queryUser" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select * from user where user.user=#{user}
+	</select>
+	<select id="queryDepartment" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select id as department_id from department where
+		department_name=#{department_name} and company_id=#{company_id}
+	</select>
+
+	<select id="queryCompany" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select id as company_id from company where company_name=#{company_name}
+	</select>
+
+	<insert id="register" parameterType="UserBean" flushCache="true">
+		insert into user set
+		user=#{user},password=#{password},name=#{name},department_id=#{department_id}
+	</insert>
+
+	<select id="getUserId" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select id as user_id from user where user.user=#{user}
+	</select>
+
+	<insert id="addTrainImgPath" parameterType="TrainImgPathBean"
+		flushCache="true">
+		insert into train_set(user_id,img_path,create_time)
+		values(#{user_id},#{img_path},now())
+	</insert>
+
+	<update id="updateReviewPath" parameterType="UserBean"
+		flushCache="true">
+		update user set review_image_path=#{review_image_path}
+		where user.user=#{user}
+	</update>
+	<update id="updateDepartment" parameterType="UserBean"
+		flushCache="true">
+		update user set department_id=#{department_id},review_status=0
+		where user.user=#{user}
+	</update>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.zm.dao.ManagerReviewDao">
+	
+	<select id="getRegisterList" resultType="RegisterItemBean" parameterType="ManagerUserBean" flushCache="true">
+ 		select * from user where department_id=#{department_id} and review_status=0
+	</select>
+	
+	<update id="updateReviewStatus" parameterType="RegisterItemBean" flushCache="true">
+ 		update user set review_status=#{review_status} where user=#{user}
+	</update>
+ </mapper>

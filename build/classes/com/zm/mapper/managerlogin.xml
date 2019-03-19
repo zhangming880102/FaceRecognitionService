@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.zm.dao.ManagerLoginDao">
+ 	
+ 	<select id="login" resultType="ManagerUserBean" parameterType="ManagerUserBean" flushCache="true">
+ 		select * from manager_user,department,company where manager_user.department_id=department.id and department.company_id=company.id
+ 		and manager_user.user=#{user}
+ 		and password=#{password}
+	</select>
+	 <select id="queryUser" resultType="ManagerUserBean" parameterType="ManagerUserBean" flushCache="true">
+ 		select * from manager_user where user=#{user}
+	</select>
+	
+	<select id="queryDepartment" resultType="ManagerUserBean" parameterType="ManagerUserBean" flushCache="true">
+ 		select id as department_id from department where department_name=#{department_name} and company_id=#{company_id}
+	</select>
+	
+	<select id="queryCompany" resultType="ManagerUserBean" parameterType="ManagerUserBean" flushCache="true">
+ 		select id as company_id from company where company_name=#{company_name}
+	</select>
+	
+	<insert id="register" parameterType="ManagerUserBean" flushCache="true">
+		insert into manager_user set user=#{user},password=#{password},name=#{name},department_id=#{department_id}
+	</insert>
+	
+	<select id="getUserId" resultType="ManagerUserBean" parameterType="ManagerUserBean" flushCache="true">
+ 		select id as user_id from manager_user where user=#{user}
+	</select>
+	<insert id="registerCompany" parameterType="ManagerUserBean" flushCache="true">
+		insert into company set company_name=#{company_name}
+	</insert>
+	<insert id="registerDepartment" parameterType="ManagerUserBean" flushCache="true">
+		insert into department set department_name=#{department_name},department_latitude=#{department_latitude},department_longtitude=#{department_longtitude},department_address=#{department_address},company_id=#{company_id},start_time=now()
+	</insert>
+	
+	<update id="updateDepartment" parameterType="ManagerUserBean" flushCache="true">
+		update department set department_name=#{department_name},
+		department_latitude=#{department_latitude},
+		department_longtitude=#{department_longtitude},
+		department_address=#{department_address},start_time=now(),
+		use_status=#{use_status},morning_h=#{morning_h},morning_m=#{morning_m},
+		evening_h=#{evening_h},evening_m=#{evening_m},week_from=#{week_from},
+		week_to=#{week_to} where id=#{department_id}
+	</update>
+	
+	<update id="updateCompany" parameterType="ManagerUserBean" flushCache="true">
+		update company set company_name=#{company_name} where id=#{company_id}
+	</update>
+	
+ </mapper>

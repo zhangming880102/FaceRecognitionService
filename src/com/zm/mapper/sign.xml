@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zm.dao.SignDao">
+
+	<select id="getAddress" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select * from
+		user,department,company where user.department_id=department.id
+		and
+		department.company_id=company.id
+		and user.user=#{user}
+		and
+		user.password=#{password}
+	</select>
+	<select id="getUserId" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select id as user_id,department_id
+		from user where user.user=#{user}
+	</select>
+	<insert id="sign" parameterType="SignBean" flushCache="true"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		sign(user_id,create_time,address,latitude,longtitude,img_sign,address_sign,sign_status)
+		values(#{user_id},now(),#{address},#{latitude},#{longtitude},#{img_sign},#{address_sign},#{sign_status})
+	</insert>
+
+	<insert id="addImgPath" parameterType="SignBean"
+		flushCache="true">
+		insert into test_set(sign_id,path,sign_status)
+		values(#{sign_id},#{path},#{sign_status})
+	</insert>
+
+	<select id="getSignList" resultType="SignItemBean"
+		parameterType="UserBean" flushCache="true">
+		select
+		date_format(create_time,'%Y-%m-%d %H:%i:%s') as
+		create_time,address,img_sign,address_sign,sign_status from sign,user
+		where user.id=sign.user_id and user.user=#{user}
+	</select>
+	<select id="queryManagerSign" resultType="ManagerSignItemBean"
+		parameterType="ManagerSignItemBean" flushCache="true">
+		select
+		create_time,name,user.user from user,sign where user.id=sign.user_id
+		and sign_status=1 and date_format(create_time,"%Y%m%d")=#{query_date}
+		and user.user=#{user} order by create_time
+	</select>
+
+	<select id="queryUserByDepartmentId" resultType="UserBean"
+		parameterType="UserBean" flushCache="true">
+		select * from user where
+		user.department_id=#{department_id}
+	</select>
+
+	<select id="queryScheduler" resultType="TrainScheduler"
+		flushCache="true">
+		select * from train_scheduler where status=0
+	</select>
+	<select id="querySchedulerByDepartmentId"
+		resultType="TrainScheduler" parameterType="TrainScheduler"
+		flushCache="true">
+		select * from train_scheduler where status=0 and department_id=#{department_id}
+	</select>
+	<select id="queryRunningScheduler" resultType="TrainScheduler"
+		parameterType="TrainScheduler" flushCache="true">
+		select * from
+		train_scheduler where status=1 and department_id=#{department_id}
+	</select>
+
+	<update id="updateSchedulerById" parameterType="TrainScheduler"
+		flushCache="true">
+		update train_scheduler set
+		status=#{status},start_time=#{start_time},end_time=#{end_time},message=#{message}
+		where id=#{id}
+	</update>
+	<insert id="addScheduler" parameterType="TrainScheduler"
+		flushCache="true">
+		insert into train_scheduler(department_id,create_time)
+		values(#{department_id},now())
+	</insert>
+
+	<select id="queryTrainSet" parameterType="TrainScheduler"
+		resultType="TrainImgPathBean" flushCache="true">
+		select * from user,train_set where train_set.user_id=user.id and
+		user.department_id=#{department_id} and review_status=1;
+	</select>
+
+	<insert id="addClassifier" parameterType="ClassifierBean"
+		flushCache="true">
+		insert into
+		classifier(pca_model_path,lda_model_path,department_id,create_time)
+		values(#{pca_model_path},#{lda_model_path},#{department_id},now())
+	</insert>
+
+	<select id="queryClassifier" parameterType="ClassifierBean"
+		resultType="ClassifierBean" flushCache="true">
+		select * from classifier where department_id=#{department_id} and
+		use_status=1 order by create_time desc
+	</select>
+</mapper>
